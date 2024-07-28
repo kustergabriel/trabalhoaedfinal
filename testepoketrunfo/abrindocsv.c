@@ -15,18 +15,7 @@ int main() {
     char aux[MAX_POKEMONS];
     int telaload = 0;
     int i = 0;
-    
-    // tela de carregamento
-    printf("----------------------Seja bem vindo ao POKETRUNFO!----------------------\n");
-    printf("----------------------Insira uma tecla para Comecar a jogar----------------------\n");
-    printf("---------------------- 0 = CONSULTA POKEDEX----------------------\n");
-    printf("---------------------- 1 = EMBARALHAR AS CARTAS----------------------\n");
-    printf("---------------------- 2 = SORTEIO DAS CARTAS----------------------\n");
-    printf("---------------------- 10 = SAIR DO JOGO----------------------\n");
-    printf("Insira a sua alternativa: ");
-    scanf("%d", &telaload);
 
-    // abre o arquivo
     FILE *pokemon = openarq("/Meus Projetos/Trabalho Final AED1/trabalhoaedfinal/testepoketrunfo/pokemon.csv");
     if (pokemon == NULL) {
         return 1; 
@@ -34,24 +23,39 @@ int main() {
 
     // le todas as linhas e armazena no array de ponteiros
     while (fgets(aux, sizeof(aux), pokemon) && i < MAX_POKEMONS) {    
-        linha[i] = strdup(aux); // Duplica a linha e armazena no array de ponteiros
+        linha[i] = strdup(aux); 
         i++;
     }
 
     fclose(pokemon);
+    
+    // tela de carregamento
+    printf("----------------------Seja bem vindo ao POKETRUNFO!----------------------\n");
+    printf("----------------------Insira uma tecla para Comecar a jogar----------------------\n");
+    do {
+    printf("---------------------- 0 = CONSULTA POKEDEX----------------------\n");
+    printf("---------------------- 1 = EMBARALHAR AS CARTAS----------------------\n");
+    printf("---------------------- 2 = SORTEIO DAS CARTAS----------------------\n");
+    printf("---------------------- 10 = SAIR DO JOGO----------------------\n");
+    printf("Insira a sua alternativa: ");
+    scanf("%d", &telaload);
+
 
     // imprime os pokémons na tela conforme a opção escolhida porem nao quero todos, quero so o que o animalzinho digita
-    do {
+    
         if (telaload == 0) {
             consultapokedex(linha,i);
 
         } else if (telaload == 1) {
             /*embaralhar as cartas*/
+            /*talvez usar rand aproveitando que eu ja to armazenando eles*/
     }
+
+// condicao pra acabar o jogo    
 }   while (telaload != 10);
         printf ("O jogo foi encerrado!");
 
-    free_lines(linha, i);
+    free_lines(linha, i); // liberando memoria das linhas
 
     return 0;
     }
@@ -87,5 +91,5 @@ void consultapokedex (char *lines[], int count) {
             } 
         }
         if (encontrado != 1)
-            printf ("Pokemon nao encontrado, tente digitar com letras maiusculas!");
+            printf ("Pokemon nao encontrado, tente digitar com letras maiusculas!\n");
 }

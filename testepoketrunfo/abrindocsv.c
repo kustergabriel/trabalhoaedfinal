@@ -45,15 +45,15 @@ int main() {
         printf("Insira o nome do Pokemon que deseja buscar: ");
         scanf("%99s", nomepokemon);  
     // buscando pelo nome dele (muito maneiro!!!)
-         
         for (int j = 0; j < i; j++) {
             if (strstr(linha[j], nomepokemon) != NULL) { 
-                printf("\n %s", linha[j]);
+                printf("%s", linha[j]);
                 encontrado = 1;
                 break;
             } 
         }
-        printf ("Pokemon nao econtrado, tente digitar com letras maiusculas e minusculas!");
+        if (encontrado != 1)
+            printf ("Pokemon nao encontrado, tente digitar com letras maiusculas!");
 
     } else if (telaload == 1) {
         /*embaralhar as cartas*/

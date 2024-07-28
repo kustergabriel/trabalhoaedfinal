@@ -8,21 +8,21 @@
 
 FILE *openarq(const char *filename);
 void free_lines(char *lines[], int count);
+void consultapokedex (char *linha[], int count);
 
 int main() {
     char *linha[MAX_POKEMONS];  // armazenar as linhas do arquvio
     char aux[MAX_POKEMONS];
     int telaload = 0;
     int i = 0;
-    char nomepokemon[100];
-    int encontrado = 0;
-
+    
     // tela de carregamento
     printf("----------------------Seja bem vindo ao POKETRUNFO!----------------------\n");
     printf("----------------------Insira uma tecla para Comecar a jogar----------------------\n");
     printf("---------------------- 0 = CONSULTA POKEDEX----------------------\n");
     printf("---------------------- 1 = EMBARALHAR AS CARTAS----------------------\n");
     printf("---------------------- 2 = SORTEIO DAS CARTAS----------------------\n");
+    printf("---------------------- 10 = SAIR DO JOGO----------------------\n");
     printf("Insira a sua alternativa: ");
     scanf("%d", &telaload);
 
@@ -41,24 +41,15 @@ int main() {
     fclose(pokemon);
 
     // imprime os pokémons na tela conforme a opção escolhida porem nao quero todos, quero so o que o animalzinho digita
-    if (telaload == 0) {
-        printf("Insira o nome do Pokemon que deseja buscar: ");
-        scanf("%99s", nomepokemon);  
-    // buscando pelo nome dele (muito maneiro!!!)
-        for (int j = 0; j < i; j++) {
-            if (strstr(linha[j], nomepokemon) != NULL) { 
-                printf("%s", linha[j]);
-                encontrado = 1;
-                break;
-            } 
-        }
-        if (encontrado != 1)
-            printf ("Pokemon nao encontrado, tente digitar com letras maiusculas!");
+    do {
+        if (telaload == 0) {
+            consultapokedex(linha,i);
 
-    } else if (telaload == 1) {
-        /*embaralhar as cartas*/
+        } else if (telaload == 1) {
+            /*embaralhar as cartas*/
     }
-
+}   while (telaload != 10);
+        printf ("O jogo foi encerrado!");
 
     free_lines(linha, i);
 
@@ -80,4 +71,21 @@ void free_lines(char *lines[], int count) {
     for (int i = 0; i < count; i++) {
         free(lines[i]); 
     }
+}
+// funcao para consultar a pokedex pelo nome do pokemon
+void consultapokedex (char *lines[], int count) {
+    char nomepokemon[100];
+    int encontrado = 0;
+    printf("Insira o nome do Pokemon que deseja buscar: ");
+        scanf("%99s", nomepokemon);  
+    // buscando pelo nome dele (muito maneiro!!!)
+        for (int j = 0; j < count; j++) {
+            if (strstr(lines[j], nomepokemon) != NULL) {  /*strstr muito massa essa funcao!!!*/
+                printf("%s", lines[j]);
+                encontrado = 1;
+                break;
+            } 
+        }
+        if (encontrado != 1)
+            printf ("Pokemon nao encontrado, tente digitar com letras maiusculas!");
 }

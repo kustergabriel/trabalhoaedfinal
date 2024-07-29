@@ -44,7 +44,7 @@ int main() {
     // imprime os pokémons na tela conforme a opção escolhida porem nao quero todos, quero so o que o animalzinho digita
     
         if (telaload == 0) {
-            consultapokedex(linha,i);
+            consultapokedex(linha,i); // FALTA NESSA FUNCAO AINDA PODER USAR SOMENTE LETRAS MINUSCULAS
 
         } else if (telaload == 1) {
             /*embaralhar as cartas*/

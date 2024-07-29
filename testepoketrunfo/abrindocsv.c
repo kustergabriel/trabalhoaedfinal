@@ -1,6 +1,8 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include <time.h>
 
 #define NRO_CARTAS 5 // numero de cartas por jogador
@@ -9,6 +11,7 @@
 FILE *openarq(const char *filename);
 void free_lines(char *lines[], int count);
 void consultapokedex (char *linha[], int count);
+void telainicial (int *opcao);
 
 int main() {
     char *linha[MAX_POKEMONS];  // armazenar as linhas do arquvio
@@ -16,6 +19,7 @@ int main() {
     int telaload = 0;
     int i = 0;
 
+    //abre o arquivo e verifica se foi aberto corretamente.
     FILE *pokemon = openarq("/Meus Projetos/Trabalho Final AED1/trabalhoaedfinal/testepoketrunfo/pokemon.csv");
     if (pokemon == NULL) {
         return 1; 
@@ -30,30 +34,17 @@ int main() {
     fclose(pokemon);
     
     // tela de carregamento
-    printf("----------------------Seja bem vindo ao POKETRUNFO!----------------------\n");
-    printf("----------------------Insira uma tecla para Comecar a jogar----------------------\n");
-    do {
-    printf("---------------------- 0 = CONSULTA POKEDEX----------------------\n");
-    printf("---------------------- 1 = EMBARALHAR AS CARTAS----------------------\n");
-    printf("---------------------- 2 = SORTEIO DAS CARTAS----------------------\n");
-    printf("---------------------- 10 = SAIR DO JOGO----------------------\n");
-    printf("Insira a sua alternativa: ");
-    scanf("%d", &telaload);
-
+    telainicial (&telaload);
 
     // imprime os pokémons na tela conforme a opção escolhida porem nao quero todos, quero so o que o animalzinho digita
     
-        if (telaload == 0) {
+    if (telaload == 0) {
             consultapokedex(linha,i); // FALTA NESSA FUNCAO AINDA PODER USAR SOMENTE LETRAS MINUSCULAS
 
         } else if (telaload == 1) {
             /*embaralhar as cartas*/
             /*talvez usar rand aproveitando que eu ja to armazenando eles*/
     }
-
-// condicao pra acabar o jogo    
-}   while (telaload != 10);
-        printf ("O jogo foi encerrado!");
 
     free_lines(linha, i); // liberando memoria das linhas
 
@@ -82,14 +73,41 @@ void consultapokedex (char *lines[], int count) {
     int encontrado = 0;
     printf("Insira o nome do Pokemon que deseja buscar: ");
         scanf("%99s", nomepokemon);  
+
+    // Convertendo o nome do pokemon digitado para maiúsculas
+    for (int i = 0; nomepokemon[i]; i++) {
+        nomepokemon[i] = toupper(nomepokemon[i]);
+    }
+
+    for (int j = 0; j < count; j++) {
+        char *linhaaux = strdup(lines[j]); // Duplicando a linha para modificação
+        if (linhaaux == NULL) {
+            printf("Erro de alocação de memória!\n");
+            break;
+        }
+        for (int k = 0; linhaaux[k]; k++) {
+            linhaaux[k] = toupper(linhaaux[k]);
+        }
+
     // buscando pelo nome dele (muito maneiro!!!)
-        for (int j = 0; j < count; j++) {
-            if (strstr(lines[j], nomepokemon) != NULL) {  /*strstr muito massa essa funcao!!!*/
+            if (strstr(linhaaux, nomepokemon) != NULL) {  /*strstr muito massa essa funcao!!!*/
                 printf("%s", lines[j]);
                 encontrado = 1;
+                free(linhaaux);
                 break;
             } 
         }
         if (encontrado != 1)
             printf ("Pokemon nao encontrado, tente digitar com letras maiusculas!\n");
+}
+// funcao da tela inicial
+void telainicial (int *opcao) {
+    printf("----------------------Seja bem vindo ao POKETRUNFO!----------------------\n");
+    printf("----------------------Insira uma tecla para Comecar a jogar----------------------\n");
+    printf("---------------------- 0 = CONSULTA POKEDEX----------------------\n");
+    printf("---------------------- 1 = EMBARALHAR AS CARTAS----------------------\n");
+    printf("---------------------- 2 = SORTEIO DAS CARTAS----------------------\n");
+    printf("---------------------- 10 = SAIR DO JOGO----------------------\n");
+    printf("Insira a sua alternativa: ");
+    scanf("%d", &opcao);
 }

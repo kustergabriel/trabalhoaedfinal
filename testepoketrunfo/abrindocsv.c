@@ -49,32 +49,35 @@ int main() {
                 cartas[j] = j;
             }
 
-            printf("Cartas antes do embaralhamento:\n");
+            /*  printf("Cartas antes do embaralhamento:\n");
             for (int j = 0; j < NRO_CARTAS; j++) {
                 printf("%d ", cartas[j]);
             }
+            printf("\n"); */
+
+            shuffle(cartas, MAX_POKEMONS); // aqui esta sendo aleatorizado
+            printf ("Cartas embaralhadas, o que deseja fazer agora? ");
             printf("\n");
 
-            shuffle(cartas, MAX_POKEMONS);
-
-            printf("Cartas depois do embaralhamento:\n");
+           /* printf("Cartas embaralhadas:\n");
             for (int j = 0; j < NRO_CARTAS; j++) {
-                printf("%s ", linha[cartas[j]]);
+                printf("%s", linha[cartas[j]]);
             }
-            printf("\n");
-        } else if (telaload != 10) {
-            printf("Ainda falta implementacao!!\n");
+            printf("\n"); */
+
+        } else if (telaload == 2) {
+            printf("Pensar no que vai ser feito!!\n");
         }
     } while (telaload != 10);
         printf("Jogo encerrado, obrigado por jogar!!!\n");
 
     free_lines(linha, i); // liberando memoria das linhas
-    fclose(pokemon);
+    fclose(pokemon); // fecha o arquivo .csv
 
     return 0;
 }
 
-    // abre o arquivoooo
+    // abre o arquivo
 FILE *openarq(const char *filename) {
     FILE *pokemon = fopen(filename, "r");
     if (pokemon == NULL) {
@@ -98,9 +101,8 @@ void consultapokedex (char *lines[], int count) {
     printf("Insira o nome do Pokemon que deseja buscar: ");
     scanf("%99s", nomepokemon);  
 
-    // converte o nome do pokemon pra letras maisculas
     for (int i = 0; nomepokemon[i]; i++) {
-        nomepokemon[i] = toupper(nomepokemon[i]);
+        nomepokemon[i] = toupper(nomepokemon[i]); // converte o nome do pokemon pra letras maisculas
     }
 
     for (int j = 0; j < count; j++) {
@@ -123,7 +125,7 @@ void consultapokedex (char *lines[], int count) {
             printf ("Pokemon nao encontrado!\n");
 }
 
-    //tela inicial mesmo mesmo
+    // tela inicial mesmo mesmo
 void telainicial0 (void) {
     printf("----------------------Seja bem vindo ao POKETRUNFO!----------------------\n");
     printf("----------------------Insira uma tecla para Comecar a jogar----------------------\n");
@@ -139,13 +141,13 @@ void telainicial (int *opcao) {
     scanf("%d", opcao);
 }
 
-    //vou utilizar o fisher yates  
+    // vou utilizar o fisher yates  
 void troca(int *a, int *b) {
     int temp = *a;
     *a = *b;
     *b = temp;
 }
-
+    // peguei o codigo da internet e implementei aqui
 void shuffle(int array[], int n) {
     srand(time(NULL));
     for (int i = n - 1; i > 0; i--) {

@@ -15,7 +15,7 @@ void telainicial (int *opcao);
 
 int main() {
     char *linha[MAX_POKEMONS];  // armazenar as linhas do arquvio
-    char aux[MAX_POKEMONS];
+    char aux[MAX_POKEMONS]; // para duplicar a linha mesmo do arquivo
     int telaload = 0;
     int i = 0;
 
@@ -33,24 +33,25 @@ int main() {
 
     fclose(pokemon);
     
-    // tela de carregamento
-    telainicial (&telaload);
+    // deixa a tela de carregamento
+    do {
+        telainicial(&telaload);
 
-    // imprime os pokémons na tela conforme a opção escolhida porem nao quero todos, quero so o que o animalzinho digita
-    
-    if (telaload == 0) {
-            consultapokedex(linha,i); // FALTA NESSA FUNCAO AINDA PODER USAR SOMENTE LETRAS MINUSCULAS
-
+        if (telaload == 0) {
+            consultapokedex(linha, i); // Consulta na pokédex
         } else if (telaload == 1) {
-            /*embaralhar as cartas*/
-            /*talvez usar rand aproveitando que eu ja to armazenando eles*/
-    }
+            /* Implementar embaralhamento de cartas */
+            printf("Embaralhamento de cartas ainda não implementado.\n");
+        } else if (telaload != 10) {
+            printf("Ainda falta implementacao!!\n");
+        }
+    } while (telaload != 10);
+            printf("Jogo encerrado!!!!\n");
 
     free_lines(linha, i); // liberando memoria das linhas
 
     return 0;
-    }
-
+}
 // abre o arquivoooo
 FILE *openarq(const char *filename) {
     FILE *pokemon = fopen(filename, "r");
@@ -98,7 +99,7 @@ void consultapokedex (char *lines[], int count) {
             } 
         }
         if (encontrado != 1)
-            printf ("Pokemon nao encontrado, tente digitar com letras maiusculas!\n");
+            printf ("Pokemon nao encontrado!\n");
 }
 // funcao da tela inicial
 void telainicial (int *opcao) {
@@ -109,5 +110,5 @@ void telainicial (int *opcao) {
     printf("---------------------- 2 = SORTEIO DAS CARTAS----------------------\n");
     printf("---------------------- 10 = SAIR DO JOGO----------------------\n");
     printf("Insira a sua alternativa: ");
-    scanf("%d", &opcao);
+    scanf("%d", opcao);
 }

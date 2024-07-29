@@ -15,6 +15,8 @@ void free_lines(char *lines[], int count);
 void consultapokedex (char *linha[], int count);
 void telainicial (int *opcao);
 void telainicial0 (void);
+void shuffle(int array[], int n);
+void troca(int *a, int *b);
 
 int main() {
     char *linha[MAX_POKEMONS];  // armazenar as linhas do arquvio
@@ -42,8 +44,24 @@ int main() {
         if (telaload == 0) {
             consultapokedex(linha, i); /* acho que tenho que muda essa funcao para ser com listas!!*/
         } else if (telaload == 1) {
-            /* Implementar embaralhamento de cartas */
-            printf("Embaralhamento de cartas ainda não implementado.\n");
+            int cartas[MAX_POKEMONS];
+            for (int j = 0; j < MAX_POKEMONS; j++) {
+                cartas[j] = j;
+            }
+
+            printf("Cartas antes do embaralhamento:\n");
+            for (int j = 0; j < NRO_CARTAS; j++) {
+                printf("%d ", cartas[j]);
+            }
+            printf("\n");
+
+            shuffle(cartas, MAX_POKEMONS);
+
+            printf("Cartas depois do embaralhamento:\n");
+            for (int j = 0; j < NRO_CARTAS; j++) {
+                printf("%s ", linha[cartas[j]]);
+            }
+            printf("\n");
         } else if (telaload != 10) {
             printf("Ainda falta implementacao!!\n");
         }
@@ -119,4 +137,19 @@ void telainicial (int *opcao) {
     printf("---------------------- 10 = SAIR DO JOGO----------------------\n");
     printf("Insira a sua alternativa: ");
     scanf("%d", opcao);
+}
+
+    //vou utilizar o fisher yates  
+void troca(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void shuffle(int array[], int n) {
+    srand(time(NULL));
+    for (int i = n - 1; i > 0; i--) {
+        int j = rand() % (i + 1);
+        troca(&array[i], &array[j]);
+    }
 }

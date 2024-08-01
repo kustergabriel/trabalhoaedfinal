@@ -7,16 +7,29 @@
 
 /*criar o .c o .h e o makefile*/
 
+typedef struct {
+    char name[50];
+    char type1[20];
+    char type2[20];
+    int hp;
+    int attack;
+    int defense;
+    int sp_attack;
+    int sp_defense;
+    int speed;
+} Pokemon;
+
 #define NRO_CARTAS 5 // numero de cartas por jogador
 #define MAX_POKEMONS 800 // nro de pokemons
 
 FILE *openarq(const char *filename);
 void free_lines(char *lines[], int count);
-void consultapokedex (char *linha[], int count);
+void consultapokedex(Pokemon pokemons[], int count);
 void telainicial (int *opcao);
 void telainicial0 (void);
 void shuffle(int array[], int n);
 void troca(int *a, int *b);
+int read_csv(const char *filename, Pokemon pokemons[]);
 
 int main() {
     char *linha[MAX_POKEMONS];  // armazenar as linhas do arquvio
@@ -42,7 +55,7 @@ int main() {
     do {
         telainicial(&telaload);
         if (telaload == 0) {
-            consultapokedex(linha, i); /* acho que tenho que muda essa funcao para ser com listas!!*/
+            consultapokedex(pokemons, num_pokemons); /* acho que tenho que muda essa funcao para ser com listas!!*/
         } else if (telaload == 1) {
             int cartas[MAX_POKEMONS];
             for (int j = 0; j < MAX_POKEMONS; j++) {
@@ -95,7 +108,7 @@ void free_lines(char *lines[], int count) {
 }
 
     // funcao para consultar a pokedex pelo nome do pokemon
-void consultapokedex (char *lines[], int count) {
+void consultapokedex(Pokemon pokemons[], int count); {
     char nomepokemon[100];
     int encontrado = 0;
     printf("Insira o nome do Pokemon que deseja buscar: ");
@@ -114,7 +127,7 @@ void consultapokedex (char *lines[], int count) {
         for (int k = 0; linhaaux[k]; k++) {
             linhaaux[k] = toupper(linhaaux[k]);
         }
-            if (strstr(linhaaux, nomepokemon) != NULL) {  /*strstr muito massa essa funcao!!!*/
+            if (strstr(linhaaux, nomepokemon) != NULL) { /*strstr muito massa essa funcao!!! procuram pela primeira ocorrência da string que você passar como parâmetro*/
                 printf("%s", lines[j]);
                 encontrado = 1;
                 free(linhaaux);
@@ -155,3 +168,4 @@ void shuffle(int array[], int n) {
         troca(&array[i], &array[j]);
     }
 }
+

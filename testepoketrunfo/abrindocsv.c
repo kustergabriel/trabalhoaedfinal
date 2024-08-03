@@ -42,7 +42,7 @@ int main() {
     do {
         telainicial(&telaload);
         if (telaload == 0) {
-            consultapokedex(linha, i); /* acho que tenho que muda essa funcao para ser com listas!!*/
+            consultapokedex(linha, i); /* acho que tenho que muda essa funcao para ser com listas!! */
         } else if (telaload == 1) {
             int cartas[MAX_POKEMONS];
             for (int j = 0; j < MAX_POKEMONS; j++) {
@@ -114,7 +114,7 @@ void consultapokedex (char *lines[], int count) {
         for (int k = 0; linhaaux[k]; k++) {
             linhaaux[k] = toupper(linhaaux[k]);
         }
-            if (strstr(linhaaux, nomepokemon) != NULL) {  /*strstr muito massa essa funcao!!!*/
+            if (strstr(linhaaux, nomepokemon) != NULL) {  /*strstr muito massa essa funcao!!! ela procura a string*/
                 printf("%s", lines[j]);
                 encontrado = 1;
                 free(linhaaux);

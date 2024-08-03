@@ -1,0 +1,12 @@
+/*  printf("Cartas antes do embaralhamento:\n");
+            for (int j = 0; j < NRO_CARTAS; j++) {
+                printf("%d ", cartas[j]);
+            }
+            printf("\n"); */
+
+
+            /* printf("Cartas embaralhadas:\n");
+            for (int j = 0; j < NRO_CARTAS; j++) {
+                printf("%s", linha[cartas[j]]);
+            }
+            printf("\n"); */

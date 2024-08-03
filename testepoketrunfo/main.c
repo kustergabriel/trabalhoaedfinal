@@ -54,7 +54,8 @@ int main() {
             }
 
             embaralharcartas(cartas, MAX_POKEMONS); // aqui esta sendo aleatorizado
-            printf ("Cartas embaralhadas, o que deseja fazer agora?\n");
+            printf ("Cartas embaralhadas JOGADOR 1, o que deseja fazer agora?\n");
+            
 
         } else if (telaload == 2) {
             printf("Pensar no que vai ser feito!!\n");

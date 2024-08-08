@@ -25,7 +25,7 @@ FILE *openarq(const char *filename);
 void consultapokedex(Nodo* lista);
 void telainicial (int *opcao);
 void telainicial0 (void);
-void embaralharcartas(int array[], int n, Pilha *p);
+void embaralharcartas(int array[], int n, Nodo* lista);
 void troca(int *a, int *b);
 Nodo* cria_lista(void);
 Nodo* insere_lista(Nodo* lista, char* linha);
@@ -37,7 +37,24 @@ void push(Pilha* p, float x);
 float pop(Pilha* p);
 int vazia(Pilha* p);
 void libera_pilha(Pilha* p);
-void imprime_pilha(Pilha* p);
+void imprime_pilha(Pilha* p,Nodo *lista);
+void imprime_pokemon_por_indice(Nodo* lista, int indice) {
+    Nodo* pAtual = lista;
+    int count = 0;
+
+    // Navega até o índice desejado
+    while (pAtual != NULL && count < indice) {
+        pAtual = pAtual->prox;
+        count++;
+    }
+
+    if (pAtual != NULL) {
+        printf("Indice %d: %s", indice, pAtual->linha);
+    } else {
+        printf("Pokemon nao encontrado para o indice %d!\n", indice);
+    }
+}
+
 
 
 int main() {
@@ -67,9 +84,9 @@ int main() {
             for (int j = 0; j < MAX_POKEMONS; j++) {
                 cartas[j] = j;
             }
-            embaralharcartas(cartas, MAX_POKEMONS, p);            
+            embaralharcartas(cartas, MAX_POKEMONS, lista);         
             printf ("Cartas embaralhadas, o que deseja fazer agora?\n");
-            imprime_pilha(p); // Imprime as cartas na pilha
+            imprime_pilha(p, lista); // Imprime as cartas na pilha
         } else if (telaload == 2) {
             printf("Distribuindo Cartas Para os Jogadores!\n");
         }
@@ -120,6 +137,7 @@ void consultapokedex(Nodo* lista) {
         printf ("Pokemon nao encontrado!\n");
 }
 
+// parte do kevin
 void linhazinha(int width) {
     for (int i = 0; i < width; i++) {
         printf("-");
@@ -127,6 +145,7 @@ void linhazinha(int width) {
     printf("\n");
 }
 
+// parte do kevin
 void colocarnomeio(const char *text, int width) {
     int padding = (width - strlen(text)) / 2;
     printf("|");
@@ -140,6 +159,7 @@ void colocarnomeio(const char *text, int width) {
     printf("|\n");
 }
 
+// parte do kevin
 void telainicial0(void) {
     int width = 50;
     linhazinha(width);
@@ -149,6 +169,7 @@ void telainicial0(void) {
     linhazinha(width);
 }
 
+// parte do kevin
 void telainicial(int *opcao) {
     int width = 50;
     linhazinha(width);
@@ -169,20 +190,31 @@ void troca(int *a, int *b) {
 }
 
 // peguei o codigo da internet e implementei aqui
-void embaralharcartas(int array[], int n, Pilha *p) {
+void embaralharcartas(int array[], int n, Nodo* lista) {
+    Pilha* p = cria_pilha();
     srand(time(NULL));
     for (int i = n - 1; i > 0; i--) {
         int j = rand() % (i + 1);
         troca(&array[i], &array[j]);
     }
-            for (int k = 0; k < NRO_CARTAS; k++) {
-                if (p->n == NRO_CARTAS){
-                printf("Capacidade da pilha estourou.\n");
-                exit(1);
-            }
-            push(p, array[k]);
+
+    // Adiciona os primeiros NRO_CARTAS índices à pilha
+    for (int k = 0; k < NRO_CARTAS && k < n; k++) {
+        if (p->n == NRO_CARTAS) {
+            printf("Capacidade da pilha estourou.\n");
+            return 0;
         }
+        push(p, array[k]);
+    }
+
+    // Imprime as cartas na pilha
+    imprime_pilha(p, lista);
+
+    // Libera a pilha após o uso
+    libera_pilha(p);
 }
+
+
 
 Nodo* cria_lista(void) {
     return NULL;
@@ -239,13 +271,15 @@ void libera_pilha(Pilha* p) {
     free(p);
 }
 
-void imprime_pilha(Pilha* p) {
-    printf("Cartas na sua mao:\n");
+void imprime_pilha(Pilha* p, Nodo* lista) {
+    printf("Cartas na pilha:\n");
     for (int i = 0; i < p->n; i++) {
-        printf("%.2f ", p->v[i]);
+        int indice = (int)p->v[i]; // Converta o valor para índice
+        imprime_pokemon_por_indice(lista, indice);
     }
     printf("\n");
 }
+
 
 // parte do kevin
 void pokeinfo(char *linha) {

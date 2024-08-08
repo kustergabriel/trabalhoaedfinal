@@ -14,6 +14,13 @@ struct nodo {
 };
 typedef struct nodo Nodo;
 
+//pilha para distribuir as cartas para os jogadores
+typedef struct pilha{
+ int n;
+ float v[NRO_CARTAS];
+}Pilha;
+
+
 FILE *openarq(const char *filename);
 void consultapokedex(Nodo* lista);
 void telainicial (int *opcao);
@@ -25,6 +32,12 @@ Nodo* insere_lista(Nodo* lista, char* linha);
 void imprime_lista(Nodo* lista);
 void free_lista(Nodo* lista);
 void pokeinfo(char *linha);
+Pilha* cria_pilha();
+void push(Pilha* p, float x);
+float pop(Pilha* p);
+int vazia(Pilha* p);
+void libera_pilha(Pilha* p);
+
 
 int main() {
     char aux[MAX_POKEMONS]; // para duplicar a linha do arquivo
@@ -52,17 +65,14 @@ int main() {
             for (int j = 0; j < MAX_POKEMONS; j++) {
                 cartas[j] = j;
             }
-
             embaralharcartas(cartas, MAX_POKEMONS); // aqui esta sendo aleatorizado
-            printf ("Cartas embaralhadas JOGADOR 1, o que deseja fazer agora?\n");
-            
-
+            printf ("Cartas embaralhadas, o que deseja fazer agora?\n");
         } else if (telaload == 2) {
-            printf("Pensar no que vai ser feito!!\n");
+            printf("Distribuindo Cartas Para os Jogadores!\n");
         }
     } while (telaload != 10);
     
-    printf("Jogo encerrado, obrigado por jogar!!!\n");
+    printf("Jogo encerrado, obrigado por jogar!!!");
 
     free_lista(lista); // liberando memoria das linhas
     fclose(pokemon); // fecha o arquivo .csv
@@ -160,6 +170,9 @@ void embaralharcartas(int array[], int n) {
     for (int i = n - 1; i > 0; i--) {
         int j = rand() % (i + 1);
         troca(&array[i], &array[j]);
+      //  for (int k = 0; k < j; k++) {
+          //  Pilha* cria_pilha(k);
+       // }
     }
 }
 
@@ -185,6 +198,32 @@ void free_lista(Nodo* lista) {
         p = temp;
     }
 }
+
+Pilha* cria_pilha(){
+    Pilha* p = (Pilha*) malloc(sizeof(Pilha));
+    p->n = 0; // Inicializa com 0 elementos
+    return p;
+}
+
+void push(Pilha* p, float x){
+ if (p->n == NRO_CARTAS){
+     printf("Capacidade da pilha estourou.\n");
+    exit(1);
+ }
+    p->v[p->n] = x;
+    p->n++;
+}
+
+float pop(Pilha* p){
+    if (vazia(p)){
+        printf("Pilha vazia.\n");
+        exit(1);
+    }
+    p->n--;
+    return p->v[p->n];
+}
+
+
 
 void pokeinfo(char *linha) {
     char *token;

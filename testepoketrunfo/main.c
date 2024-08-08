@@ -25,7 +25,7 @@ FILE *openarq(const char *filename);
 void consultapokedex(Nodo* lista);
 void telainicial (int *opcao);
 void telainicial0 (void);
-void embaralharcartas(int array[], int n);
+void embaralharcartas(int array[], int n, Pilha *p);
 void troca(int *a, int *b);
 Nodo* cria_lista(void);
 Nodo* insere_lista(Nodo* lista, char* linha);
@@ -37,12 +37,14 @@ void push(Pilha* p, float x);
 float pop(Pilha* p);
 int vazia(Pilha* p);
 void libera_pilha(Pilha* p);
+void imprime_pilha(Pilha* p);
 
 
 int main() {
     char aux[MAX_POKEMONS]; // para duplicar a linha do arquivo
     int telaload = 0;
     Nodo* lista = cria_lista();
+    Pilha* p = cria_pilha();
     
     //abre o arquivo e verifica se foi aberto corretamente.
     FILE *pokemon = openarq("/Meus Projetos/Trabalho Final AED1/trabalhoaedfinal/testepoketrunfo/pokemon.csv");
@@ -65,8 +67,9 @@ int main() {
             for (int j = 0; j < MAX_POKEMONS; j++) {
                 cartas[j] = j;
             }
-            embaralharcartas(cartas, MAX_POKEMONS); // aqui esta sendo aleatorizado
+            embaralharcartas(cartas, MAX_POKEMONS, p);            
             printf ("Cartas embaralhadas, o que deseja fazer agora?\n");
+            imprime_pilha(p); // Imprime as cartas na pilha
         } else if (telaload == 2) {
             printf("Distribuindo Cartas Para os Jogadores!\n");
         }
@@ -76,6 +79,7 @@ int main() {
 
     free_lista(lista); // liberando memoria das linhas
     fclose(pokemon); // fecha o arquivo .csv
+    libera_pilha(p); // libera a memoria da pilha
 
     return 0;
 }
@@ -165,15 +169,19 @@ void troca(int *a, int *b) {
 }
 
 // peguei o codigo da internet e implementei aqui
-void embaralharcartas(int array[], int n) {
+void embaralharcartas(int array[], int n, Pilha *p) {
     srand(time(NULL));
     for (int i = n - 1; i > 0; i--) {
         int j = rand() % (i + 1);
         troca(&array[i], &array[j]);
-      //  for (int k = 0; k < j; k++) {
-          //  Pilha* cria_pilha(k);
-       // }
     }
+            for (int k = 0; k < NRO_CARTAS; k++) {
+                if (p->n == NRO_CARTAS){
+                printf("Capacidade da pilha estourou.\n");
+                exit(1);
+            }
+            push(p, array[k]);
+        }
 }
 
 Nodo* cria_lista(void) {
@@ -223,8 +231,23 @@ float pop(Pilha* p){
     return p->v[p->n];
 }
 
+int vazia(Pilha* p) {
+    return p->n == 0; // Retorna 1 (true) se a pilha estiver vazia, 0 (false) caso contrário
+}
 
+void libera_pilha(Pilha* p) {
+    free(p);
+}
 
+void imprime_pilha(Pilha* p) {
+    printf("Cartas na sua mao:\n");
+    for (int i = 0; i < p->n; i++) {
+        printf("%.2f ", p->v[i]);
+    }
+    printf("\n");
+}
+
+// parte do kevin
 void pokeinfo(char *linha) {
     char *token;
     char *delim = ","; // ou o delimitador que separa os campos no  CSV

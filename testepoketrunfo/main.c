@@ -37,8 +37,8 @@ void push(Pilha* p, float x);
 float pop(Pilha* p);
 int vazia(Pilha* p);
 void libera_pilha(Pilha* p);
-void imprime_pilha(Pilha* p);
-
+void imprime_pilha(Pilha* p, Nodo* lista);
+void busca_pokemon_na_lista(Nodo* lista, int numero);
 
 int main() {
     //variaveis
@@ -70,9 +70,9 @@ int main() {
             }
             embaralharcartas(cartas, MAX_POKEMONS, p);            
             printf ("Cartas embaralhadas, o que deseja fazer agora?\n");
-            imprime_pilha(p); // Imprime as cartas na pilha
         } else if (telaload == 2) {
             printf("Distribuindo Cartas Para os Jogadores!\n");
+            //imprime_pilha(p, lista); // Imprime as cartas na pilha
         }
     } while (telaload != 10);
     
@@ -120,6 +120,20 @@ void consultapokedex(Nodo* lista) {
     if (!encontrado)
         printf ("Pokemon nao encontrado!\n");
 }
+// funcao para buscar pelo numero da lista para conseguir pegar o numero dele e imprimir o nome dele!!
+void busca_pokemon_na_lista(Nodo* lista, int numero) {
+    char num_str[10];
+    sprintf(num_str, "%d", numero);  // Converte o número do Pokémon para string
+
+    for (Nodo* p = lista; p != NULL; p = p->prox) {
+        if (strstr(p->linha, num_str) != NULL && (p->linha[0] == num_str[0])) {
+            printf("%s",p->linha);
+            return;
+        }
+    }
+    printf("Pokemon nao encontrado!\n");
+}
+
 
 void linhazinha(int width) {
     for (int i = 0; i < width; i++) {
@@ -240,12 +254,15 @@ void libera_pilha(Pilha* p) {
     free(p);
 }
 
-void imprime_pilha(Pilha* p) {
+void imprime_pilha(Pilha* p, Nodo* lista) {
     printf("Cartas na sua mao:\n");
-    for (int i = 0; (i < p->n); i++) {
-        printf("Pokemon: %.f\n", p->v[i]);
+    for (int i = 0; i < p->n; i++) {
+        int numero_pokedex = (int)p->v[i];
+        printf("Pokemon na posicao %d da pilha:\n", i + 1);
+        busca_pokemon_na_lista(lista, numero_pokedex);
     }
 }
+
 
 // parte do kevin
 void pokeinfo(char *linha) {

@@ -97,7 +97,7 @@ FILE *openarq(const char *filename) {
 
 // funcao para consultar a pokedex pelo nome do pokemon
 void consultapokedex(Nodo* lista) {
-    char nomepokemon[100];
+    char nomepokemon[40];
     int encontrado = 0;
     printf("Insira o nome do Pokemon que deseja buscar: ");
     scanf("%99s", nomepokemon);  
@@ -108,7 +108,7 @@ void consultapokedex(Nodo* lista) {
     for (Nodo* p = lista; p != NULL; p = p->prox) {
         char linhaaux[MAX_POKEMONS];
         strcpy(linhaaux, p->linha);
-        for (int k = 0; linhaaux[k]; k++) {
+        for (int k = 1; linhaaux[k]; k++) { //k = 1 para pular a primeira linha do arquivo
             linhaaux[k] = toupper(linhaaux[k]);
         }
         if (strstr(linhaaux, nomepokemon) != NULL) {

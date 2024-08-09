@@ -7,7 +7,7 @@
 #define NRO_CARTAS 5 // numero de cartas por jogador
 #define MAX_POKEMONS 800 // nro de pokemons
 
-// vou utilizar listas para a pokedex!!!
+// vou utilizar listas para a pokedex
 struct nodo {
     char linha[MAX_POKEMONS]; // armazenar a lista
     struct nodo* prox;
@@ -41,6 +41,7 @@ void imprime_pilha(Pilha* p);
 
 
 int main() {
+    //variaveis
     char aux[MAX_POKEMONS]; // para duplicar a linha do arquivo
     int telaload = 0;
     Nodo* lista = cria_lista();
@@ -75,7 +76,7 @@ int main() {
         }
     } while (telaload != 10);
     
-    printf("Jogo encerrado, obrigado por jogar!!!");
+    printf("Jogo encerrado!");
 
     free_lista(lista); // liberando memoria das linhas
     fclose(pokemon); // fecha o arquivo .csv
@@ -241,10 +242,9 @@ void libera_pilha(Pilha* p) {
 
 void imprime_pilha(Pilha* p) {
     printf("Cartas na sua mao:\n");
-    for (int i = 0; i < p->n; i++) {
-        printf("%.2f ", p->v[i]);
+    for (int i = 0; (i < p->n); i++) {
+        printf("Pokemon: %.f\n", p->v[i]);
     }
-    printf("\n");
 }
 
 // parte do kevin
